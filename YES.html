@@ -1,94 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Romantic Message</title>
+    <title>the trust </title>
     <style>
-      body {
-        font-family: 'Arial', sans-serif;
-        background-color: red;
-        color: #af3c3c;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100vh;
-        text-align: center;
-      }
-
-      .container {
-        background-color: black;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: white;
-        width: 80%;
-        max-width: 600px;
-      }
-
-      h1 {
-        font-size: 2.5rem;
-        color: white;
-      }
-
-      p {
-        font-size: 1.5rem;
-        margin-top: 20px;
-        color:red;
-      }
-
-      img {
-        width: 100%; /* Make the image responsive */
-        max-width: 400px; /* Limit the width of the image */
-        margin-top: 20px;
-        border-radius: 10px;
-      }
-
-      audio {
-        width: 100%;
-        margin-top: 20px;
-      }
-      button {
-        font-size: 1.2rem;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 200px; /* Set a fixed width for buttons */
-        background-color: red;
-        color: white;
-        transition: background-color 0.3s ease;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #4d0808;
+            overflow: hidden;
+        }
+        #movingButton {
+            position: absolute;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: rgba(247, 243, 243, 0.953);
+            background-color: #000000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: #f3f2f2c6;
+        }
+        #movingButton:hover {
+            background-color: #01060b;
+        }
+        #message {
+            font-size: 24px;
+            color: #f5ecec;
+            margin-bottom: 20px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
+  <p id="message">The more you trust, the more you will love me.</p>
+  <button id="movingButton">Focus for the next step</button>
 
-    <div class="container">
-      <h1>You should always love me <br> Today, Tomorrow, and Forever 
-      <em> LINA </em></h1>
+  <script>
+      const button = document.getElementById('movingButton');
+      const message = document.getElementById('message');
+      let moveCount = 0;
 
-      <p> I LOVE U </p>
+      // Function to generate random positions within the viewport
+      function moveButton() {
+          if (moveCount < 4) {
+              const x = Math.random() * (window.innerWidth - button.offsetWidth);
+              const y = Math.random() * (window.innerHeight - button.offsetHeight);
+              button.style.left = `${x}px`;
+              button.style.top = `${y}px`;
+              moveCount++;
 
-      
-      <img src="https://i.pinimg.com/originals/76/a6/86/76a68671fff570eafb65dbe08f21e85a.gif">
+              // Update message based on move count
+              if (moveCount === 1) {
+                  message.textContent = "The more you trust, the more you will love me.";
+              } 
+              else if (moveCount == 2) {
+                message.textContent = "Ops! You should focus."
+              }
+              else if (moveCount === 3) {
+                  message.textContent = "Got you again ;) Hahaha!";
+              } else if (moveCount === 4) {
+                  message.textContent = "Got you again! Seems it's hard to click on it, bby.";
+              }
+            } else {
+                button.removeEventListener('mouseover', moveButton); // Remove mouseover listener
+                button.removeEventListener('touchstart', moveButton); // Remove touchstart listener
+            }
+        }
 
-      
-      <audio controls autoplay>
-        <source src="Mitski - My Love Mine All Mine copy 2.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-      </audio>
-      <button id="too"> I LOVE U TOO</button>
-    </div>
-    <script>
- document.getElementById("too").addEventListener("click", goToMusicPage);
+        // Move button initially
+        moveButton();
 
-function goToMusicPage() {
-  window.location.href = 'too.html';
-      }
+        // Add mouseover event for desktop and touchstart for mobile
+        button.addEventListener('mouseover', moveButton);
+        button.addEventListener('touchstart', moveButton); // For mobile devices
 
+        // Add click event to redirect to another page
+        button.addEventListener('click', () => {
+            window.location.href = 'too.html';
+        });
     </script>
-
-  </body>
+</body>
 </html>
