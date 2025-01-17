@@ -3,52 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I LOVE TOO </title>
-</head><style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: rgb(255, 230, 0);
-        color: #af3c3c;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100vh;
-        text-align: center;
-      }
-img {
-        width: 100%; 
-        max-width: 400px; 
-        margin-top: 20px;
-        border-radius: 10px;
-      }
-      button {
-        font-size: 1.2rem;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 200px; 
-        background-color: #4CAF50;
-        color: white;
-        transition: background-color 0.3s ease;
-      }
+    <title>the love</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #4b0000;
+        }
 
-</style>
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            width: 90vw;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            background-color: #000000de;
+            position: relative;
+        }
+
+        .piece {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: 400px 400px;
+            cursor: pointer;
+            border: 1px solid #a80a0a;
+        }
+
+        .piece.active {
+            opacity: 0.7;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .completed-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: rgb(5, 0, 0);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .completed-button:hover {
+            transform: scale(1.1);
+            background-color: darkred;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0.5);
+            text-align: center;
+        }
+
+        .message.yes-message {
+            color: #100202; /* Initial color */
+            animation: fadeInScale 1.5s forwards, colorPulse 2s infinite;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes colorPulse {
+            0% {
+                color: #120707; /* Red */
+            }
+            50% {
+                color: #ff69b4; /* Pink */
+            }
+            100% {
+                color: #ebe0e0; /* Red */
+            }
+        }
+    </style>
+</head>
 <body>
-    <img src="https://i.pinimg.com/originals/e0/8d/64/e08d645bfb4321dce4c711d65d8ca8ba.gif">
-    <button id="likeButton">Did you like it?</button>
-</div>
+    <div class="puzzle-container" id="puzzle-container"></div>
+    <div class="btn-container" id="btn-container"></div>
+    <div class="message" id="message-container"></div>
+    <script>
+        const container = document.getElementById("puzzle-container");
+        const btnContainer = document.getElementById("btn-container");
+        const messageContainer = document.getElementById("message-container");
 
-<script>
-  document.getElementById("likeButton").addEventListener("click", goToLink);
+        // Image URL for the puzzle
+        const imageURL = "https://i.pinimg.com/736x/c0/6a/7d/c06a7d01e15b99bfb4ebc9a329359f9b.jpg";
+        const rows = 4;
+        const cols = 4;
 
-  function goToLink() {
-    window.location.href = 'https://gifft.me/o/hm/ygwi8kppbsbbmo2hjtgtg5bg';
-  }
-</script>
-<img src="https://i.pinimg.com/originals/12/04/c3/1204c3b88d1ca23b472e3ab380e86374.gif">
+        let pieces = [];
+        let activePiece = null;
+
+        // Create puzzle pieces
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const piece = document.createElement("div");
+                piece.classList.add("piece");
+                piece.style.backgroundImage = `url(${imageURL})`;
+                piece.style.backgroundPosition = `${-col * 100}px ${-row * 100}px`;
+                piece.dataset.correctPosition = `${row}-${col}`;
+                pieces.push(piece);
+            }
+        }
+
+        // Shuffle pieces
+        pieces = pieces.sort(() => Math.random() - 0.5);
+
+        // Append shuffled pieces to the container
+        pieces.forEach(piece => container.appendChild(piece));
+
+        // Piece swapping logic
+        container.addEventListener("click", (e) => {
+            if (e.target.classList.contains("piece")) {
+                if (!activePiece) {
+                    activePiece = e.target;
+                    activePiece.classList.add("active");
+                } else {
+                    const target = e.target;
+                    const activeIndex = Array.from(container.children).indexOf(activePiece);
+                    const targetIndex = Array.from(container.children).indexOf(target);
+
+                    // Swap DOM elements
+                    container.insertBefore(activePiece, target);
+                    container.insertBefore(target, container.children[activeIndex]);
+
+                    activePiece.classList.remove("active");
+                    activePiece = null;
+
+                    checkCompletion();
+                }
+            }
+        });
+
+        // Check if the puzzle is solved
+        function checkCompletion() {
+            const isComplete = Array.from(container.children).every((piece, index) => {
+                const [correctRow, correctCol] = piece.dataset.correctPosition.split('-').map(Number);
+                const currentRow = Math.floor(index / cols);
+                const currentCol = index % cols;
+                return correctRow === currentRow && correctCol === currentCol;
+            });
+
+            if (isComplete) {
+                showButtons();
+            }
+        }
+
+        // Display Yes and No buttons
+        function showButtons() {
+            btnContainer.innerHTML = ""; // Clear existing buttons if any
+            const yesButton = document.createElement("button");
+            yesButton.classList.add("completed-button");
+            yesButton.innerText = "Yes";
+            yesButton.addEventListener("click", () => showMessage("I love you LINA", true));
+
+            const noButton = document.createElement("button");
+            noButton.classList.add("completed-button");
+            noButton.innerText = "No";
+            noButton.addEventListener("click", () => {
+                noButton.remove(); // Remove the "No" button
+                showMessage("I knew you would click No, but there's no NO in this. I am the one for you, and you belong to me.");
+            });
+
+            btnContainer.appendChild(yesButton);
+            btnContainer.appendChild(noButton);
+        }
+
+        // Display a message
+        function showMessage(text, isYes = false) {
+            messageContainer.innerText = text;
+            messageContainer.className = "message"; // Reset any existing class
+            if (isYes) {
+                messageContainer.classList.add("yes-message");
+            }
+            messageContainer.style.opacity = "1";
+        }
+    </script>
 </body>
 </html>
