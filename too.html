@@ -3,206 +3,584 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the love</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #4b0000;
-        }
-
-        .puzzle-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-            width: 90vw;
-            max-width: 400px;
-            aspect-ratio: 1 / 1;
-            background-color: #000000de;
-            position: relative;
-        }
-
-        .piece {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-size: 400px 400px;
-            cursor: pointer;
-            border: 1px solid #a80a0a;
-        }
-
-        .piece.active {
-            opacity: 0.7;
-        }
-
-        .btn-container {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .completed-button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: rgb(5, 0, 0);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-
-        .completed-button:hover {
-            transform: scale(1.1);
-            background-color: darkred;
-        }
-
-        .message {
-            margin-top: 20px;
-            font-size: 20px;
-            color: #ffffff;
-            font-weight: bold;
-            opacity: 0;
-            transform: scale(0.5);
-            text-align: center;
-        }
-
-        .message.yes-message {
-            color: #100202; /* Initial color */
-            animation: fadeInScale 1.5s forwards, colorPulse 2s infinite;
-        }
-
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes colorPulse {
-            0% {
-                color: #120707; /* Red */
-            }
-            50% {
-                color: #ff69b4; /* Pink */
-            }
-            100% {
-                color: #ebe0e0; /* Red */
-            }
-        }
-    </style>
+    <title>Owl's Message</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<style> 
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a237e, #311b92);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Floating Stars */
+#floating-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 215, 0, 0.8);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: starFloat 3s ease-in-out infinite;
+}
+
+/* Cartoon Owl Styles */
+#owl {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    z-index: 10;
+    animation: fly 15s infinite linear;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.owl-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #a1887f;
+    border-radius: 60% 60% 50% 50%;
+    overflow: visible;
+    transition: all 0.3s ease;
+}
+
+.owl-feathers {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    right: 10px;
+    height: 30px;
+    background: #8d6e63;
+    border-radius: 50% 50% 0 0;
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #8d6e63;
+        border-radius: 50%;
+        top: 5px;
+    }
+    &::before { left: -5px; }
+    &::after { right: -5px; }
+}
+
+.owl-eyebrows {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 15px;
+}
+
+.eyebrow {
+    width: 25px;
+    height: 8px;
+    background: #6d4c41;
+    border-radius: 10px;
+    transform: rotate(-10deg);
+    transition: all 0.3s ease;
+}
+
+.eyebrow.right {
+    transform: rotate(10deg);
+}
+
+.owl-eyes {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10px;
+}
+
+.eye {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    animation: blink 4s infinite;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+
+.pupil {
+    width: 18px;
+    height: 18px;
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.eye-shine {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    top: 20%;
+    right: 20%;
+}
+
+.owl-beak {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    background: #ffb74d;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.1);
+        clip-path: polygon(50% 100%, 0 0, 50% 0);
+    }
+}
+
+.owl-wings {
+    position: absolute;
+    bottom: 25%;
+    width: 140%;
+    left: -20%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wing {
+    width: 40px;
+    height: 50px;
+    background: #8d6e63;
+    border-radius: 50% 50% 30% 30%;
+    animation: flap 0.5s infinite alternate;
+    position: relative;
+    &::after {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        background: #6d4c41;
+        border-radius: inherit;
+    }
+}
+
+.wing.left {
+    transform-origin: right bottom;
+    margin-left: -10px;
+}
+
+.wing.right {
+    transform-origin: left bottom;
+    margin-right: -10px;
+}
+
+.owl-feet {
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.foot {
+    width: 15px;
+    height: 20px;
+    background: #ffb74d;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Angry State */
+#owl.angry .owl-body {
+    background: #ef5350;
+}
+
+#owl.angry .owl-feathers {
+    background: #d32f2f;
+    &::before, &::after {
+        background: #d32f2f;
+    }
+}
+
+#owl.angry .eyebrow {
+    transform: rotate(-30deg);
+    background: #b71c1c;
+}
+
+#owl.angry .eyebrow.right {
+    transform: rotate(30deg);
+}
+
+#owl.angry .eye {
+    animation: angryEyes 0.5s infinite;
+}
+
+#owl.angry .pupil {
+    width: 14px;
+    height: 20px;
+    border-radius: 30% 30% 50% 50%;
+}
+
+#owl.angry .wing {
+    animation: angryFlap 0.2s infinite alternate;
+}
+
+/* Message Box Styles */
+#message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 5;
+}
+
+#message-box.show {
+    opacity: 1;
+}
+
+#current-message {
+    font-size: 1.5rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Progress Stars */
+.stars-container {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 5;
+}
+
+.star {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.3s ease;
+}
+
+.star.active {
+    color: #ffd700;
+    animation: star-pulse 0.5s ease;
+}
+
+/* Animations */
+@keyframes starFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@keyframes fly {
+    0% {
+        left: -10%;
+        top: 20%;
+        transform: rotate(10deg);
+    }
+    25% {
+        left: 40%;
+        top: 10%;
+        transform: rotate(-5deg);
+    }
+    50% {
+        left: 90%;
+        top: 40%;
+        transform: rotate(10deg);
+    }
+    75% {
+        left: 40%;
+        top: 70%;
+        transform: rotate(-5deg);
+    }
+    100% {
+        left: -10%;
+        top: 20%;
+        transform: rotate(10deg);
+    }
+}
+
+@keyframes blink {
+    0%, 96%, 98% {
+        transform: scaleY(1);
+    }
+    97% {
+        transform: scaleY(0.1);
+    }
+}
+
+@keyframes flap {
+    0% {
+        transform: rotate(-20deg);
+    }
+    100% {
+        transform: rotate(20deg);
+    }
+}
+
+@keyframes angryEyes {
+    0%, 100% {
+        transform: scaleY(1) rotate(-20deg);
+    }
+    50% {
+        transform: scaleY(0.8) rotate(-20deg);
+    }
+}
+
+@keyframes angryFlap {
+    0% {
+        transform: rotate(-40deg);
+    }
+    100% {
+        transform: rotate(40deg);
+    }
+}
+
+@keyframes flyAway {
+    0% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.1) rotate(720deg) translateY(-1000px);
+        opacity: 0;
+    }
+}
+
+@keyframes star-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+.hidden {
+    display: none;
+}
+</style>
 <body>
-    <div class="puzzle-container" id="puzzle-container"></div>
-    <div class="btn-container" id="btn-container"></div>
-    <div class="message" id="message-container"></div>
-    <script>
-        const container = document.getElementById("puzzle-container");
-        const btnContainer = document.getElementById("btn-container");
-        const messageContainer = document.getElementById("message-container");
+    <div class="game-container">
+        <!-- Floating stars -->
+        <div id="floating-stars"></div>
 
-        // Image URL for the puzzle
-        const imageURL = "https://i.pinimg.com/736x/c0/6a/7d/c06a7d01e15b99bfb4ebc9a329359f9b.jpg";
-        const rows = 4;
-        const cols = 4;
+        <!-- Cartoon owl -->
+        <div id="owl">
+            <div class="owl-body">
+                <div class="owl-feathers"></div>
+                <div class="owl-eyebrows">
+                    <div class="eyebrow left"></div>
+                    <div class="eyebrow right"></div>
+                </div>
+                <div class="owl-eyes">
+                    <div class="eye left">
+                        <div class="pupil"></div>
+                        <div class="eye-shine"></div>
+                    </div>
+                    <div class="eye right">
+                        <div class="pupil"></div>
+                        <div class="eye-shine"></div>
+                    </div>
+                </div>
+                <div class="owl-beak"></div>
+                <div class="owl-wings">
+                    <div class="wing left"></div>
+                    <div class="wing right"></div>
+                </div>
+                <div class="owl-feet">
+                    <div class="foot left"></div>
+                    <div class="foot right"></div>
+                </div>
+            </div>
+        </div>
 
-        let pieces = [];
-        let activePiece = null;
+        <!-- Message display -->
+        <div id="message-box" class="hidden">
+            <p id="current-message"></p>
+        </div>
 
-        // Create puzzle pieces
-        for (let row = 0; row < rows; row++) {
-            for (let col = 0; col < cols; col++) {
-                const piece = document.createElement("div");
-                piece.classList.add("piece");
-                piece.style.backgroundImage = `url(${imageURL})`;
-                piece.style.backgroundPosition = `${-col * 100}px ${-row * 100}px`;
-                piece.dataset.correctPosition = `${row}-${col}`;
-                pieces.push(piece);
-            }
+        <!-- Progress stars -->
+        <div class="stars-container">
+            <div id="progress-stars"></div>
+        </div>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+    const messages = [
+        "Hey... I've been thinking about you 💭",
+        "I know I messed up and I feel terrible 😔",
+        "You mean the world to me ✨",
+        "I promise to do better from now on 🌟",
+        "Can you find it in your heart to forgive me? 💝"
+    ];
+
+    let currentStep = 0;
+    let isAngry = false;
+    let isExiting = false;
+    const owl = document.getElementById('owl');
+    const messageBox = document.getElementById('message-box');
+    const currentMessage = document.getElementById('current-message');
+    const progressStars = document.getElementById('progress-stars');
+    const floatingStarsContainer = document.getElementById('floating-stars');
+
+    // Create floating stars
+    function createFloatingStars() {
+        for (let i = 0; i < 15; i++) {
+            const star = document.createElement('div');
+            star.className = 'floating-star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            floatingStarsContainer.appendChild(star);
         }
+    }
 
-        // Shuffle pieces
-        pieces = pieces.sort(() => Math.random() - 0.5);
+    // Track mouse for eye movement
+    document.addEventListener('mousemove', (e) => {
+        if (!isAngry && !isExiting) {
+            const pupils = document.querySelectorAll('.pupil');
+            pupils.forEach(pupil => {
+                const rect = pupil.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / 100;
+                const y = (e.clientY - rect.top) / 100;
+                pupil.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+    });
 
-        // Append shuffled pieces to the container
-        pieces.forEach(piece => container.appendChild(piece));
+    function initializeStars() {
+        messages.forEach(() => {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.textContent = '⭐';
+            progressStars.appendChild(star);
+        });
+    }
 
-        // Piece swapping logic
-        container.addEventListener("click", (e) => {
-            if (e.target.classList.contains("piece")) {
-                if (!activePiece) {
-                    activePiece = e.target;
-                    activePiece.classList.add("active");
-                } else {
-                    const target = e.target;
-                    const activeIndex = Array.from(container.children).indexOf(activePiece);
-                    const targetIndex = Array.from(container.children).indexOf(target);
-
-                    // Swap DOM elements
-                    container.insertBefore(activePiece, target);
-                    container.insertBefore(target, container.children[activeIndex]);
-
-                    activePiece.classList.remove("active");
-                    activePiece = null;
-
-                    checkCompletion();
-                }
+    function updateStars() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((star, index) => {
+            if (index < currentStep) {
+                star.classList.add('active');
             }
         });
+    }
 
-        // Check if the puzzle is solved
-        function checkCompletion() {
-            const isComplete = Array.from(container.children).every((piece, index) => {
-                const [correctRow, correctCol] = piece.dataset.correctPosition.split('-').map(Number);
-                const currentRow = Math.floor(index / cols);
-                const currentCol = index % cols;
-                return correctRow === currentRow && correctCol === currentCol;
+    function showMessage() {
+        if (currentStep <= messages.length) {
+            messageBox.classList.remove('hidden');
+            messageBox.classList.remove('show');
+            void messageBox.offsetWidth;
+            messageBox.classList.add('show');
+            currentMessage.textContent = messages[currentStep - 1];
+            updateStars();
+        }
+    }
+
+    function handleOwlClick() {
+        if (isExiting) return;
+
+        if (isAngry) {
+            isExiting = true;
+            owl.classList.add('exit');
+            setTimeout(() => {
+                owl.style.display = 'none';
+            }, 2000);
+            return;
+        }
+
+        if (currentStep < messages.length) {
+            currentStep++;
+            showMessage();
+            // Add new floating star near the owl
+            const star = document.createElement('div');
+            star.className = 'floating-star';
+            const owlRect = owl.getBoundingClientRect();
+            star.style.left = `${(owlRect.left + owlRect.width/2) / window.innerWidth * 100}%`;
+            star.style.top = `${(owlRect.top + owlRect.height/2) / window.innerHeight * 100}%`;
+            floatingStarsContainer.appendChild(star);
+        } else {
+            isAngry = true;
+            owl.classList.add('angry');
+            currentMessage.textContent = "Stop! I will tell Ranim you hit her favorite animal! 😠";
+            
+            // Make pupils look angry
+            const pupils = document.querySelectorAll('.pupil');
+            pupils.forEach(pupil => {
+                pupil.style.transform = 'none';
             });
-
-            if (isComplete) {
-                showButtons();
-            }
         }
+    }
 
-        // Display Yes and No buttons
-        function showButtons() {
-            btnContainer.innerHTML = ""; // Clear existing buttons if any
-            const yesButton = document.createElement("button");
-            yesButton.classList.add("completed-button");
-            yesButton.innerText = "Yes";
-            yesButton.addEventListener("click", () => showMessage("I love you LINA", true));
-
-            const noButton = document.createElement("button");
-            noButton.classList.add("completed-button");
-            noButton.innerText = "No";
-            noButton.addEventListener("click", () => {
-                noButton.remove(); // Remove the "No" button
-                showMessage("I knew you would click No, but there's no NO in this. I am the one for you, and you belong to me.");
-            });
-
-            btnContainer.appendChild(yesButton);
-            btnContainer.appendChild(noButton);
+    // Add smooth hovering movement
+    function addHoverMovement() {
+        if (!isAngry && !isExiting) {
+            const currentTop = parseFloat(owl.style.top) || 50;
+            const newTop = currentTop + (Math.random() * 6 - 3);
+            owl.style.top = `${Math.max(10, Math.min(80, newTop))}%`;
         }
-
-        // Display a message
-        function showMessage(text, isYes = false) {
-            messageContainer.innerText = text;
-            messageContainer.className = "message"; // Reset any existing class
-            if (isYes) {
-                messageContainer.classList.add("yes-message");
-            }
-            messageContainer.style.opacity = "1";
+        
+        if (!isExiting) {
+            setTimeout(addHoverMovement, 100);
         }
-    </script>
+    }
+
+    // Event listeners
+    owl.addEventListener('click', handleOwlClick);
+
+    // Initialize
+    createFloatingStars();
+    initializeStars();
+    addHoverMovement();
+});</script>
 </body>
 </html>
