@@ -5,60 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+      /* Reset and base styles */
       html, body {
         margin: 0;
         padding: 0;
         height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
 
       body {
         display: flex;
-        background-color: #a015e088;
-        font-family: sans-serif;
         justify-content: center;
         align-items: center;
+        background: linear-gradient(135deg, #a015e0, #1284fc);
+        color: white;
       }
 
+      /* Login container */
       .login {
-        display: table;
-        background-color: #1284fc;
-        border-radius: 10px;
-        box-sizing: border-box;
-        padding: 10px;
-        filter: drop-shadow(0 0 10px #0d06db);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 350px;
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .login h2 {
-        margin: 0;
-        margin-bottom: 10px;
-        text-align: center;
+        margin: 0 0 20px;
+        font-size: 24px;
+        font-weight: 600;
         color: white;
       }
 
+      /* Form styles */
       .login form input {
-        display: block;
-        margin-bottom: 10px;
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
       }
 
       .login form input:not([type="submit"]) {
-        width: 300px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+      }
+
+      .login form input:not([type="submit"]):focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
       }
 
       .login form input[type="submit"] {
-        background-color: #4CAF50;
+        background: #4CAF50;
         color: white;
-        width: 320px;
-        padding: 10px;
-        border-radius: 5px;
-        border: none;
+        font-weight: 600;
         cursor: pointer;
+        transition: background 0.3s ease;
       }
 
       .login form input[type="submit"]:hover {
-        background-color: #45a049;
+        background: #45a049;
+      }
+
+      /* Placeholder styling */
+      .login form input::placeholder {
+        color: #888;
+      }
+
+      /* Responsive design */
+      @media (max-width: 480px) {
+        .login {
+          width: 90%;
+          padding: 20px;
+        }
       }
     </style>
   </head>
