@@ -1,341 +1,417 @@
-
-            
- * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-height: 100vh;
-    background: radial-gradient(circle at top left, #ff758c 0%, #ff7eb3 100%);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    color: #2d3436;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 800px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 2.5rem;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.1),
-        0 1px 8px rgba(0, 0, 0, 0.05),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-    padding: 3rem;
-    backdrop-filter: blur(20px);
-    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center, 
-        rgba(255, 255, 255, 0.2) 0%,
-        transparent 50%);
-    animation: shimmer 15s infinite linear;
-    pointer-events: none;
-}
-
-@keyframes shimmer {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(30px) scale(0.95);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+   * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1);
-    }
-}
 
-h1 {
-    color: #d81b60;
-    text-align: center;
-    margin-bottom: 2.5rem;
-    font-size: 3rem;
-    font-weight: 800;
-    text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.1);
-    letter-spacing: -0.5px;
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-h1::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 3px;
-    background: linear-gradient(to right, transparent, #d81b60, transparent);
-}
-
-.stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    font-size: 1.2rem;
-    color: #2d3436;
-    background: rgba(233, 30, 99, 0.08);
-    padding: 1.25rem 2.5rem;
-    border-radius: 1.5rem;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(5px);
-}
-
-button#newGame {
-    background: linear-gradient(135deg, #e91e63, #d81b60);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 1.5rem;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 
-        0 4px 12px rgba(233, 30, 99, 0.3),
-        0 1px 3px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-button#newGame::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transition: 0.5s;
-}
-
-button#newGame:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 24px rgba(233, 30, 99, 0.4),
-        0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button#newGame:hover::before {
-    left: 100%;
-}
-
-button#newGame:active {
-    transform: translateY(0);
-}
-
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-    perspective: 1200px;
-    transform-style: preserve-3d;
-}
-
-.card {
-    aspect-ratio: 1;
-    background: linear-gradient(135deg, #e91e63, #c2185b);
-    border-radius: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
-    position: relative;
-    border: none;
-    box-shadow: 
-        0 8px 16px rgba(0, 0, 0, 0.1),
-        0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.card::before {
-    content: '♥';
-    position: absolute;
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.1);
-    transform: scale(2);
-}
-
-.card:hover:not(.flipped):not(.matched) {
-    transform: translateY(-4px) rotateY(10deg);
-    box-shadow: 
-        0 12px 32px rgba(0, 0, 0, 0.15),
-        0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card.flipped {
-    transform: rotateY(180deg);
-    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-    box-shadow: 
-        0 4px 12px rgba(233, 30, 99, 0.2),
-        0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.card.matched {
-    background: linear-gradient(135deg, #f8bbd0, #f48fb1);
-    cursor: default;
-    animation: matchPulse 1.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-@keyframes matchPulse {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
-
-.win-message {
-    text-align: center;
-    margin-top: 2.5rem;
-    padding: 3rem;
-    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-    border-radius: 2rem;
-    box-shadow: 
-        0 20px 40px rgba(233, 30, 99, 0.15),
-        0 2px 6px rgba(0, 0, 0, 0.1);
-    animation: winReveal 1s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-@keyframes winReveal {
-    from { 
-        opacity: 0;
-        transform: translateY(40px) scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.win-message::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, 
-        rgba(255, 255, 255, 0.8) 0%,
-        transparent 70%);
-    opacity: 0;
-    animation: winGlow 2s infinite;
-}
-
-@keyframes winGlow {
-    0% { opacity: 0; }
-    50% { opacity: 0.5; }
-    100% { opacity: 0; }
-}
-
-.win-message h2 {
-    color: #c2185b;
-    margin-bottom: 1.5rem;
-    font-size: 2.5rem;
-    font-weight: 800;
-    text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
-}
-
-.win-message p {
-    color: #2d3436;
-    font-size: 1.4rem;
-    font-weight: 500;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
     body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f3e7ff, #ffe7f0, #ffe7e7);
+        font-family: 'Georgia', serif;
         padding: 1rem;
+        background-image: url('1.jpg'); /* Path to your image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
-    
+
     .container {
+        position: relative;
+        width: 100%;
+        max-width: 32rem;
+        margin: auto;
+    }
+
+    /* Envelope Styles */
+    .envelope {
+        cursor: pointer;
+        transition: all 0.7s ease-in-out;
+        transform-origin: center;
+    }
+
+    .envelope.open {
+        transform: scale(0.95);
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    .envelope-body {
+        background: linear-gradient(135deg, #fff5e6, #fff0e0);
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         padding: 2rem;
-        border-radius: 2rem;
-    }
-    
-    h1 {
-        font-size: 2.25rem;
-        margin-bottom: 2rem;
-    }
-    
-    .stats {
-        font-size: 1rem;
-        padding: 1rem 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .card {
-        font-size: 2rem;
+        position: relative;
+        border: 2px solid #f0d5a0;
+        transition: transform 0.5s ease-in-out;
     }
 
-    .win-message {
-        padding: 2rem;
+    .envelope:hover .envelope-body {
+        transform: translateY(-10px);
     }
 
-    .win-message h2 {
-        font-size: 2rem;
+    /* Corner Decorations */
+    .corner {
+        position: absolute;
+        width: 3rem;
+        height: 3rem;
+        border: 2px solid #e6c587;
     }
 
-    .win-message p {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 1.5rem;
+    .top-left {
+        top: 0;
+        left: 0;
+        border-right: none;
+        border-bottom: none;
+        border-top-left-radius: 0.5rem;
     }
 
-    .game-board {
-        gap: 0.75rem;
+    .top-right {
+        top: 0;
+        right: 0;
+        border-left: none;
+        border-bottom: none;
+        border-top-right-radius: 0.5rem;
     }
-    
-    .stats {
-        flex-direction: column;
-        gap: 1rem;
+
+    .bottom-left {
+        bottom: 0;
+        left: 0;
+        border-right: none;
+        border-top: none;
+        border-bottom-left-radius: 0.5rem;
+    }
+
+    .bottom-right {
+        bottom: 0;
+        right: 0;
+        border-left: none;
+        border-top: none;
+        border-bottom-right-radius: 0.5rem;
+    }
+
+    /* Wax Seal */
+    .wax-seal {
+        position: absolute;
+        top: -1.25rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4rem;
+        height: 4rem;
+        background: #ff4d4d;
+        border: 4px solid #e60000;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translate(-50%, 0);
+        }
+        50% {
+            transform: translate(-50%, -10px);
+        }
+    }
+
+    .wax-seal .heart-icon {
+        width: 2rem;
+        height: 2rem;
+        color: #ffcccc;
+    }
+
+    /* Envelope Content */
+    .envelope-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 12rem;
+        background: linear-gradient(to right, #fff5e6, #fff0e0);
+        border-radius: 0.5rem;
+        border: 2px solid #f0d5a0;
+        margin-top: 1rem;
+    }
+
+    .envelope-message {
         text-align: center;
     }
 
-    h1 {
-        font-size: 2rem;
+    .mail-icon {
+        width: 2rem;
+        height: 2rem;
+        color: #b37400;
+        margin-bottom: 1rem;
+        animation: bounce 2s infinite;
     }
 
-    button#newGame {
-        width: 100%;
-        margin: 0.5rem 0;
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
     }
-}
+
+    .envelope-message p {
+        color: #b37400;
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+
+    /* Envelope Flap */
+    .envelope-flap {
+        position: absolute;
+        bottom: -0.25rem;
+        left: 0;
+        width: 100%;
+        height: 0;
+        border-top: 100px solid #f0d5a0;
+        border-left: 175px solid transparent;
+        border-right: 175px solid transparent;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Letter Styles */
+    .letter {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(135deg, #fff5e6, #fff0e0);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        transition: all 0.7s ease-in-out;
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .letter.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: #b37400;
+        font-size: 1.5rem;
+        cursor: pointer;
+        font-family: serif;
+        transition: color 0.3s ease;
+    }
+
+    .close-button:hover {
+        color: #805300;
+    }
+
+    .letter-content {
+        color: #805300;
+    }
+
+    .letter-header {
+        text-align: center;
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .letter-header .heart-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: #ff4d4d;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .letter-header h1 {
+        font-size: 2rem;
+        color: #805300;
+        margin: 1.5rem 0 0.5rem;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .date {
+        font-size: 0.875rem;
+        color: #b37400;
+        font-style: italic;
+    }
+
+    .letter-content p {
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .signature {
+        text-align: right;
+        padding-top: 1rem;
+    }
+
+    .signature p:first-child {
+        font-style: italic;
+        color: #805300;
+    }
+
+    .signature p:last-child {
+        font-size: 1.25rem;
+        color: #805300;
+        font-weight: bold;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    button {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 200px;
+        background-color: #360303;
+        color: white;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #5a0a0a;
+        transform: scale(1.05);
+    }
+ 
+
+
+
+
+
+ 
+</style>
+<body>
+    <div class="container">
+        <div class="envelope" id="envelope">
+            <!-- Main Envelope Body -->
+            <div class="envelope-body">
+                <!-- Decorative Corner Elements -->
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+
+                <!-- Wax Seal -->
+                <div class="wax-seal">
+                    <svg class="heart-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <!-- Envelope Content Area -->
+                <div class="envelope-content">
+                    <div class="envelope-message">
+                        <svg class="mail-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <br>
+                        <p>Click to reveal my heart's message</p>
+                        <br>
+                    </div>
+                </div>
+                <div class="envelope-flap"></div>
+            </div>
+        </div>
+
+        <!-- Letter -->
+        <div class="letter" id="letter">
+            <button class="close-button" id="closeButton">×</button>
+            <div class="letter-content">
+                <div class="letter-header">
+                    <svg class="heart-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+                    </svg>
+                    <br>
+                    <h1>My lina </h1>
+                    <p class="date">February 14, 2025</p>
+                    <p> Will you be my valentine </p>
+                </div>
+                <div class="button-container">
+                    <button id="yes">Yes</button>
+                    <button id="no">No</button>
+                  </div>
+                  <div class="think-again" id="thinkAgain">Think again yala !</div>
+                </div>
+            
+                <script>
+                   document.getElementById("yes").addEventListener("click", goToMusicPage);
+            
+            function goToMusicPage() {
+              // Redirect to romantic-message.html page
+              window.location.href = 'YES.html';
+                  }
+            
+                  // Event listener for the "no" button
+                  var no = document.getElementById("no");
+                  var yes = document.getElementById("yes");
+                  var thinkAgain = document.getElementById("thinkAgain");
+                  var scale = 1; // Initial scale of the "Yes" button
+
+                  no.addEventListener("click", function() {
+                    scale += 0.2; // Increase the scale by 0.2 on each click
+                    yes.style.transform = `scale(${scale})`; // Apply the new scale
+                    thinkAgain.classList.add("show-message"); // Show "Think again!" message
+                  });
+                </script>
+                
+                <div class="signature">
+                    <p>From the best girl ever,</p>
+                    <p>Ranim</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const closeButton = document.getElementById('closeButton');
+
+    envelope.addEventListener('click', () => {
+        envelope.classList.add('open');
+        letter.classList.add('open');
+    });
+
+    closeButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        envelope.classList.remove('open');
+        letter.classList.remove('open');
+    });
+});
+    </script>
+</body>
+</html>
