@@ -9,13 +9,73 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora&display=swap');
         
-        .love-note {
-            transition: all 0.5s;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .love-note:hover {
-            transform: translateY(-2px) scale(1.01);
-        }
+        @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital@0,1&display=swap');
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .love-note {
+    @apply transition-all duration-500;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .love-note:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  .textarea-love {
+    background-image: linear-gradient(to bottom, transparent 31px, #f3e8ff 31px);
+    background-size: 100% 32px;
+    line-height: 32px;
+  }
+
+  input[type="password"] {
+    letter-spacing: 0.3em;
+    font-family: monospace;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatingHeart {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating-heart {
+  animation: floatingHeart 2s ease-in-out infinite;
+}
+
+.glass-morphism {
+  @apply bg-white/90 backdrop-blur-md;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
