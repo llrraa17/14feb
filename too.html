@@ -3,584 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owl's Message</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<style> 
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #1a237e, #311b92);
-    font-family: 'Arial', sans-serif;
-    overflow: hidden;
-}
-
-.game-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-}
-
-/* Floating Stars */
-#floating-stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.floating-star {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 215, 0, 0.8);
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    animation: starFloat 3s ease-in-out infinite;
-}
-
-/* Cartoon Owl Styles */
-#owl {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    cursor: pointer;
-    z-index: 10;
-    animation: fly 15s infinite linear;
-    transform-origin: center;
-    transition: transform 0.3s ease;
-}
-
-.owl-body {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #a1887f;
-    border-radius: 60% 60% 50% 50%;
-    overflow: visible;
-    transition: all 0.3s ease;
-}
-
-.owl-feathers {
-    position: absolute;
-    top: -10px;
-    left: 10px;
-    right: 10px;
-    height: 30px;
-    background: #8d6e63;
-    border-radius: 50% 50% 0 0;
-    &::before, &::after {
-        content: '';
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: #8d6e63;
-        border-radius: 50%;
-        top: 5px;
-    }
-    &::before { left: -5px; }
-    &::after { right: -5px; }
-}
-
-.owl-eyebrows {
-    position: absolute;
-    top: 15%;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 0 15px;
-}
-
-.eyebrow {
-    width: 25px;
-    height: 8px;
-    background: #6d4c41;
-    border-radius: 10px;
-    transform: rotate(-10deg);
-    transition: all 0.3s ease;
-}
-
-.eyebrow.right {
-    transform: rotate(10deg);
-}
-
-.owl-eyes {
-    position: absolute;
-    top: 30%;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 0 10px;
-}
-
-.eye {
-    width: 35px;
-    height: 35px;
-    background: white;
-    border-radius: 50%;
-    position: relative;
-    animation: blink 4s infinite;
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1);
-}
-
-.pupil {
-    width: 18px;
-    height: 18px;
-    background: #000;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.eye-shine {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: white;
-    border-radius: 50%;
-    top: 20%;
-    right: 20%;
-}
-
-.owl-beak {
-    position: absolute;
-    bottom: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 22px;
-    height: 22px;
-    background: #ffb74d;
-    clip-path: polygon(50% 100%, 0 0, 100% 0);
-    &::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.1);
-        clip-path: polygon(50% 100%, 0 0, 50% 0);
-    }
-}
-
-.owl-wings {
-    position: absolute;
-    bottom: 25%;
-    width: 140%;
-    left: -20%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.wing {
-    width: 40px;
-    height: 50px;
-    background: #8d6e63;
-    border-radius: 50% 50% 30% 30%;
-    animation: flap 0.5s infinite alternate;
-    position: relative;
-    &::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        background: #6d4c41;
-        border-radius: inherit;
-    }
-}
-
-.wing.left {
-    transform-origin: right bottom;
-    margin-left: -10px;
-}
-
-.wing.right {
-    transform-origin: left bottom;
-    margin-right: -10px;
-}
-
-.owl-feet {
-    position: absolute;
-    bottom: -10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.foot {
-    width: 15px;
-    height: 20px;
-    background: #ffb74d;
-    border-radius: 0 0 5px 5px;
-}
-
-/* Angry State */
-#owl.angry .owl-body {
-    background: #ef5350;
-}
-
-#owl.angry .owl-feathers {
-    background: #d32f2f;
-    &::before, &::after {
-        background: #d32f2f;
-    }
-}
-
-#owl.angry .eyebrow {
-    transform: rotate(-30deg);
-    background: #b71c1c;
-}
-
-#owl.angry .eyebrow.right {
-    transform: rotate(30deg);
-}
-
-#owl.angry .eye {
-    animation: angryEyes 0.5s infinite;
-}
-
-#owl.angry .pupil {
-    width: 14px;
-    height: 20px;
-    border-radius: 30% 30% 50% 50%;
-}
-
-#owl.angry .wing {
-    animation: angryFlap 0.2s infinite alternate;
-}
-
-/* Message Box Styles */
-#message-box {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 5;
-}
-
-#message-box.show {
-    opacity: 1;
-}
-
-#current-message {
-    font-size: 1.5rem;
-    color: #333;
-    line-height: 1.5;
-}
-
-/* Progress Stars */
-.stars-container {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 1rem;
-    z-index: 5;
-}
-
-.star {
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.3);
-    transition: color 0.3s ease;
-}
-
-.star.active {
-    color: #ffd700;
-    animation: star-pulse 0.5s ease;
-}
-
-/* Animations */
-@keyframes starFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.8;
-    }
-    50% {
-        transform: translateY(-20px) rotate(180deg);
-        opacity: 1;
-    }
-}
-
-@keyframes fly {
-    0% {
-        left: -10%;
-        top: 20%;
-        transform: rotate(10deg);
-    }
-    25% {
-        left: 40%;
-        top: 10%;
-        transform: rotate(-5deg);
-    }
-    50% {
-        left: 90%;
-        top: 40%;
-        transform: rotate(10deg);
-    }
-    75% {
-        left: 40%;
-        top: 70%;
-        transform: rotate(-5deg);
-    }
-    100% {
-        left: -10%;
-        top: 20%;
-        transform: rotate(10deg);
-    }
-}
-
-@keyframes blink {
-    0%, 96%, 98% {
-        transform: scaleY(1);
-    }
-    97% {
-        transform: scaleY(0.1);
-    }
-}
-
-@keyframes flap {
-    0% {
-        transform: rotate(-20deg);
-    }
-    100% {
-        transform: rotate(20deg);
-    }
-}
-
-@keyframes angryEyes {
-    0%, 100% {
-        transform: scaleY(1) rotate(-20deg);
-    }
-    50% {
-        transform: scaleY(0.8) rotate(-20deg);
-    }
-}
-
-@keyframes angryFlap {
-    0% {
-        transform: rotate(-40deg);
-    }
-    100% {
-        transform: rotate(40deg);
-    }
-}
-
-@keyframes flyAway {
-    0% {
-        transform: scale(1) rotate(0);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0.1) rotate(720deg) translateY(-1000px);
-        opacity: 0;
-    }
-}
-
-@keyframes star-pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.3);
-    }
-}
-
-.hidden {
-    display: none;
-}
-</style>
-<body>
-    <div class="game-container">
-        <!-- Floating stars -->
-        <div id="floating-stars"></div>
-
-        <!-- Cartoon owl -->
-        <div id="owl">
-            <div class="owl-body">
-                <div class="owl-feathers"></div>
-                <div class="owl-eyebrows">
-                    <div class="eyebrow left"></div>
-                    <div class="eyebrow right"></div>
-                </div>
-                <div class="owl-eyes">
-                    <div class="eye left">
-                        <div class="pupil"></div>
-                        <div class="eye-shine"></div>
-                    </div>
-                    <div class="eye right">
-                        <div class="pupil"></div>
-                        <div class="eye-shine"></div>
-                    </div>
-                </div>
-                <div class="owl-beak"></div>
-                <div class="owl-wings">
-                    <div class="wing left"></div>
-                    <div class="wing right"></div>
-                </div>
-                <div class="owl-feet">
-                    <div class="foot left"></div>
-                    <div class="foot right"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Message display -->
-        <div id="message-box" class="hidden">
-            <p id="current-message"></p>
-        </div>
-
-        <!-- Progress stars -->
-        <div class="stars-container">
-            <div id="progress-stars"></div>
-        </div>
-    </div>
-    <script>document.addEventListener('DOMContentLoaded', () => {
-    const messages = [
-        "Hey... i dont know what should i say but i feel ashamed everyday when i woke up nd miss someone left me someone regrets about having me ",
-        "I know I messed up maybe but u cant imagine the way i felt hurt nd stupid bc i was fighting myself to not think or send u",
-        "nd in the same time keep telling myself that ur not import nd i should be fine",
-        "I promised u to not let u to not lose u or try to hurt u but why u r like that why u betrayed the hand that will never let u down",
-        "i was mad at u at myself at everything around me but at least try to send me nd tell me ur okey nd tell me a goodby in a good way bc my time will never finish with u"
-    ];
-
-    let currentStep = 0;
-    let isAngry = false;
-    let isExiting = false;
-    const owl = document.getElementById('owl');
-    const messageBox = document.getElementById('message-box');
-    const currentMessage = document.getElementById('current-message');
-    const progressStars = document.getElementById('progress-stars');
-    const floatingStarsContainer = document.getElementById('floating-stars');
-
-    // Create floating stars
-    function createFloatingStars() {
-        for (let i = 0; i < 15; i++) {
-            const star = document.createElement('div');
-            star.className = 'floating-star';
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
-            floatingStarsContainer.appendChild(star);
-        }
-    }
-
-    // Track mouse for eye movement
-    document.addEventListener('mousemove', (e) => {
-        if (!isAngry && !isExiting) {
-            const pupils = document.querySelectorAll('.pupil');
-            pupils.forEach(pupil => {
-                const rect = pupil.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / 100;
-                const y = (e.clientY - rect.top) / 100;
-                pupil.style.transform = `translate(${x}px, ${y}px)`;
-            });
-        }
-    });
-
-    function initializeStars() {
-        messages.forEach(() => {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.textContent = '⭐';
-            progressStars.appendChild(star);
-        });
-    }
-
-    function updateStars() {
-        const stars = document.querySelectorAll('.star');
-        stars.forEach((star, index) => {
-            if (index < currentStep) {
-                star.classList.add('active');
-            }
-        });
-    }
-
-    function showMessage() {
-        if (currentStep <= messages.length) {
-            messageBox.classList.remove('hidden');
-            messageBox.classList.remove('show');
-            void messageBox.offsetWidth;
-            messageBox.classList.add('show');
-            currentMessage.textContent = messages[currentStep - 1];
-            updateStars();
-        }
-    }
-
-    function handleOwlClick() {
-        if (isExiting) return;
-
-        if (isAngry) {
-            isExiting = true;
-            owl.classList.add('exit');
-            setTimeout(() => {
-                owl.style.display = 'none';
-            }, 2000);
-            return;
-        }
-
-        if (currentStep < messages.length) {
-            currentStep++;
-            showMessage();
-            // Add new floating star near the owl
-            const star = document.createElement('div');
-            star.className = 'floating-star';
-            const owlRect = owl.getBoundingClientRect();
-            star.style.left = `${(owlRect.left + owlRect.width/2) / window.innerWidth * 100}%`;
-            star.style.top = `${(owlRect.top + owlRect.height/2) / window.innerHeight * 100}%`;
-            floatingStarsContainer.appendChild(star);
-        } else {
-            isAngry = true;
-            owl.classList.add('angry');
-            currentMessage.textContent = "Stop! I will tell Ranim you hit her favorite animal! 😠";
-            
-            // Make pupils look angry
-            const pupils = document.querySelectorAll('.pupil');
-            pupils.forEach(pupil => {
-                pupil.style.transform = 'none';
-            });
-        }
-    }
-
-    // Add smooth hovering movement
-    function addHoverMovement() {
-        if (!isAngry && !isExiting) {
-            const currentTop = parseFloat(owl.style.top) || 50;
-            const newTop = currentTop + (Math.random() * 6 - 3);
-            owl.style.top = `${Math.max(10, Math.min(80, newTop))}%`;
-        }
+    <title>Love Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora&display=swap');
         
-        if (!isExiting) {
-            setTimeout(addHoverMovement, 100);
+        .love-note {
+            transition: all 0.5s;
+            animation: fadeIn 0.5s ease-out;
         }
-    }
-
-    // Event listeners
-    owl.addEventListener('click', handleOwlClick);
-
-    // Initialize
-    createFloatingStars();
-    initializeStars();
-    addHoverMovement();
-});</script>
+        .love-note:hover {
+            transform: translateY(-2px) scale(1.01);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+    <div class="max-w-3xl w-full">
+        <h1 class="text-5xl font-playfair text-gray-800 text-center">Love Notes</h1>
+        <p class="text-gray-600 text-center italic">Cherish every moment, capture every thought</p>
+        
+        <form id="noteForm" class="mt-6">
+            <textarea id="noteContent" class="w-full h-40 p-4 border rounded-lg" placeholder="Write your note..."></textarea>
+            <input id="notePin" type="password" class="w-full px-4 py-2 border rounded-lg mt-2" placeholder="Enter a PIN (4-digits)" maxlength="4">
+            <button type="submit" class="w-full mt-3 bg-blue-500 text-white py-2 rounded-lg">Save Note</button>
+        </form>
+        
+        <div id="notesContainer" class="mt-6 space-y-4"></div>
+    </div>
+    
+    <script>
+        const notes = [];
+        document.getElementById('noteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const content = document.getElementById('noteContent').value;
+            const pin = document.getElementById('notePin').value;
+            if (!content.trim() || !pin.trim()) return;
+            
+            const note = { id: Date.now(), content, pin };
+            notes.unshift(note);
+            document.getElementById('noteContent').value = '';
+            document.getElementById('notePin').value = '';
+            renderNotes();
+        });
+        
+        function renderNotes() {
+            const container = document.getElementById('notesContainer');
+            container.innerHTML = '';
+            
+            notes.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.classList.add('love-note', 'p-4', 'border', 'rounded-lg', 'bg-white', 'shadow');
+                
+                const pinInput = document.createElement('input');
+                pinInput.type = 'password';
+                pinInput.placeholder = 'Enter PIN to view';
+                pinInput.classList.add('w-full', 'px-3', 'py-2', 'border', 'rounded-lg', 'mb-2');
+                
+                const revealBtn = document.createElement('button');
+                revealBtn.innerText = 'Unlock';
+                revealBtn.classList.add('bg-green-500', 'text-white', 'px-3', 'py-1', 'rounded-lg', 'w-full');
+                
+                revealBtn.addEventListener('click', function() {
+                    if (pinInput.value === note.pin) {
+                        const noteContent = document.createElement('p');
+                        noteContent.innerText = note.content;
+                        noteContent.classList.add('mt-2', 'text-gray-700');
+                        noteDiv.appendChild(noteContent);
+                        pinInput.remove();
+                        revealBtn.remove();
+                    } else {
+                        alert('Incorrect PIN!');
+                    }
+                });
+                
+                noteDiv.appendChild(pinInput);
+                noteDiv.appendChild(revealBtn);
+                container.appendChild(noteDiv);
+            });
+        }
+    </script>
 </body>
 </html>
+
+  
