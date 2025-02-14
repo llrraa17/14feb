@@ -119,6 +119,475 @@ function goToMusicPage() {
         no.style.top = j + "px";
       }
     </script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Memory Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, #ff758c 0%, #ff7eb3 100%);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #2d3436;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 2.5rem;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        0 1px 8px rgba(0, 0, 0, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    padding: 3rem;
+    backdrop-filter: blur(20px);
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.2) 0%,
+        transparent 50%);
+    animation: shimmer 15s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px) scale(0.95);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+    }
+}
+
+h1 {
+    color: #d81b60;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 3rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.1);
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #d81b60, transparent);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    font-size: 1.2rem;
+    color: #2d3436;
+    background: rgba(233, 30, 99, 0.08);
+    padding: 1.25rem 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+}
+
+button#newGame {
+    background: linear-gradient(135deg, #e91e63, #d81b60);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 12px rgba(233, 30, 99, 0.3),
+        0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+button#newGame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+button#newGame:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 24px rgba(233, 30, 99, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button#newGame:hover::before {
+    left: 100%;
+}
+
+button#newGame:active {
+    transform: translateY(0);
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.card {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    border-radius: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+    border: none;
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card::before {
+    content: '♥';
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.1);
+    transform: scale(2);
+}
+
+.card:hover:not(.flipped):not(.matched) {
+    transform: translateY(-4px) rotateY(10deg);
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.15),
+        0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+    box-shadow: 
+        0 4px 12px rgba(233, 30, 99, 0.2),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card.matched {
+    background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+    cursor: default;
+    animation: matchPulse 1.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes matchPulse {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.win-message {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding: 3rem;
+    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+    border-radius: 2rem;
+    box-shadow: 
+        0 20px 40px rgba(233, 30, 99, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+    animation: winReveal 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes winReveal {
+    from { 
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.win-message::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.8) 0%,
+        transparent 70%);
+    opacity: 0;
+    animation: winGlow 2s infinite;
+}
+
+@keyframes winGlow {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+
+.win-message h2 {
+    color: #c2185b;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+}
+
+.win-message p {
+    color: #2d3436;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .container {
+        padding: 2rem;
+        border-radius: 2rem;
+    }
+    
+    h1 {
+        font-size: 2.25rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stats {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .card {
+        font-size: 2rem;
+    }
+
+    .win-message {
+        padding: 2rem;
+    }
+
+    .win-message h2 {
+        font-size: 2rem;
+    }
+
+    .win-message p {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .game-board {
+        gap: 0.75rem;
+    }
+    
+    .stats {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    button#newGame {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+<body>
+    <div class="container">
+        <h1>Love Memory Game</h1>
+        
+        <div class="stats">
+            <p>Moves: <span id="moves">0</span></p>
+            <button id="newGame">New Game</button>
+            <p>Matches: <span id="matches">0</span>/8</p>
+        </div>
+
+        <div class="game-board"></div>
+
+        <div id="winMessage" class="win-message hidden">
+            <h2>Congratulations! 🎉</h2>
+            <p>You completed the game in <span id="finalMoves">0</span> moves!</p>
+        </div>
+    </div>
+    <script>const cards = [
+        '❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞',
+        '❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞'
+    ];
+    
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let canFlip = true;
+    
+    const gameBoard = document.querySelector('.game-board');
+    const movesDisplay = document.getElementById('moves');
+    const matchesDisplay = document.getElementById('matches');
+    const winMessage = document.getElementById('winMessage');
+    const finalMovesDisplay = document.getElementById('finalMoves');
+    const newGameButton = document.getElementById('newGame');
+    
+    function shuffleCards() {
+        for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+    }
+    
+    function createCard(symbol, index) {
+        const card = document.createElement('button');
+        card.className = 'card';
+        card.dataset.index = index;
+        card.dataset.symbol = symbol;
+        card.addEventListener('click', flipCard);
+        return card;
+    }
+    
+    function flipCard() {
+        if (!canFlip || flippedCards.includes(this) || this.classList.contains('matched')) {
+            return;
+        }
+    
+        this.classList.add('flipped');
+        this.innerHTML = this.dataset.symbol;
+        flippedCards.push(this);
+    
+        if (flippedCards.length === 2) {
+            moves++;
+            movesDisplay.textContent = moves;
+            checkMatch();
+        }
+    }
+    
+    function checkMatch() {
+        const [card1, card2] = flippedCards;
+        const match = card1.dataset.symbol === card2.dataset.symbol;
+    
+        canFlip = false;
+    
+        setTimeout(() => {
+            if (match) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                matchesDisplay.textContent = matchedPairs;
+    
+                if (matchedPairs === 8) {
+                    showWinMessage();
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.innerHTML = '';
+                card2.innerHTML = '';
+            }
+    
+            flippedCards = [];
+            canFlip = true;
+        }, 1000);
+    }
+    
+    function showWinMessage() {
+        winMessage.classList.remove('hidden');
+        finalMovesDisplay.textContent = moves;
+    }
+    
+    function initializeGame() {
+        gameBoard.innerHTML = '';
+        winMessage.classList.add('hidden');
+        flippedCards = [];
+        matchedPairs = 0;
+        moves = 0;
+        canFlip = true;
+    
+        movesDisplay.textContent = '0';
+        matchesDisplay.textContent = '0';
+    
+        shuffleCards();
+        cards.forEach((symbol, index) => {
+            gameBoard.appendChild(createCard(symbol, index));
+        });
+    }
+    
+    newGameButton.addEventListener('click', initializeGame);
+    
+    // Start the game
+    initializeGame();</script>
+</body>
+</html>
   </body>
 </html>
