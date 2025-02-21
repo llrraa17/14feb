@@ -1,224 +1,60 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>surprise</title>
+    <title>Surprise</title>
     <style>
+      /* General Styles */
       body {
-        font-family: 'Arial', sans-serif;
-        background-color: #000000;
-        color: #730808;
+        font-family: 'Playfair Display', serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        color: #4a4a4a;
         margin: 0;
         padding: 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        height: 100vh;
+        justify-content: center;
+        min-height: 100vh;
         text-align: center;
       }
 
-      .poem-container {
-        background-color: #7c1010;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 0 15px rgba(211, 213, 215, 0.856);
-        color: white;
-        width: 80%; /* Ensure the content fits within the screen */
-        max-width: 600px; /* Set a max width */
-        overflow: hidden; /* Prevent overflow of content */
-      }
-
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
-
-      .poem-title {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        color: #020012;
-      }
-
-      img {
-        width: 100%; /* Make the image responsive */
-        max-width: 500px; /* Limit the width of the image */
-        border-radius: 10px;
-        margin-bottom: 20px; /* Add space between the image and buttons */
-      }
-
-      /* Button styling */
-      .button-container {
-        display: flex;
-        justify-content: center; /* Align buttons horizontally */
-        gap: 20px; /* Add space between buttons */
-        margin-top: 20px;
-      }
-
-      button {
-        font-size: 1.2rem;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 200px; /* Set a fixed width for buttons */
-        background-color: #360303;
-        color: white;
-        transition: background-color 0.3s ease;
-      }
-
-      button:hover {
-        background-color: #4a0707; /* Darker shade on hover */
-      }
-    </style>
-  </head>
-  <body>
-    <div class="poem-container">
-      <h1 class="poem-title"> new start for us ? </h1>
-      <p>
-         YOU were such an experience
-      </p>
-      <img src="" alt="Romantic Image">
-      
-      <!-- Button container for horizontal alignment -->
-      <div class="button-container">
-        <button id="yes">Yes</button>
-        <button id="no">No</button>
-      </div>
-    </div>
-
-    <script>
-      document.getElementById("yes").addEventListener("click", goToMusicPage);
-
-      function goToMusicPage() {
-        // Redirect to YES.html page
-        window.location.href = 'YES.html';
-      }
-
-      // Fixing event listener for the "no" button
-      var no = document.getElementById("no");
-      no.addEventListener("click", change);
-
-      function change() {
-        var maxWidth = window.innerWidth - no.offsetWidth; // Maximum x-position within the window
-        var maxHeight = window.innerHeight - no.offsetHeight; // Maximum y-position within the window
-
-        // Generate random positions for the "No" button
-        var i = Math.floor(Math.random() * maxWidth);
-        var j = Math.floor(Math.random() * maxHeight);
-
-        // Change the position of the "No" button
-        no.style.position = 'absolute'; // Make the button's position absolute to allow free movement
-        no.style.left = i + "px";
-        no.style.top = j + "px";
-      }
-    </script>
-
-    <!-- Love Memory Game Section (kept intact) -->
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        min-height: 100vh;
-        background: radial-gradient(circle at top left, #ff758c 0%, #ff7eb3 100%);
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #2d3436;
-        overflow-x: hidden;
-      }
-
+      /* Love Memory Game Styles */
       .container {
         max-width: 800px;
         width: 100%;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 2.5rem;
-        box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.1),
-            0 1px 8px rgba(0, 0, 0, 0.05),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-        padding: 3rem;
-        backdrop-filter: blur(20px);
-        animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .container::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at center, 
-            rgba(255, 255, 255, 0.2) 0%,
-            transparent 50%);
-        animation: shimmer 15s infinite linear;
-        pointer-events: none;
-      }
-
-      @keyframes shimmer {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        animation: fadeIn 1s ease-in-out;
       }
 
       @keyframes fadeIn {
-        from { 
-            opacity: 0; 
-            transform: translateY(30px) scale(0.95);
-        }
-        to { 
-            opacity: 1; 
-            transform: translateY(0) scale(1);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       h1 {
-        color: #d81b60;
-        text-align: center;
-        margin-bottom: 2.5rem;
         font-size: 3rem;
-        font-weight: 800;
-        text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.1);
-        letter-spacing: -0.5px;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-      }
-
-      h1::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 3px;
-        background: linear-gradient(to right, transparent, #d81b60, transparent);
+        color: #d81b60;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(216, 27, 96, 0.2);
       }
 
       .stats {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
         font-size: 1.2rem;
-        color: #2d3436;
-        background: rgba(233, 30, 99, 0.08);
-        padding: 1.25rem 2.5rem;
-        border-radius: 1.5rem;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        color: #4a4a4a;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem 2rem;
+        border-radius: 15px;
         backdrop-filter: blur(5px);
       }
 
@@ -226,360 +62,314 @@
         background: linear-gradient(135deg, #e91e63, #d81b60);
         color: white;
         border: none;
-        padding: 1rem 2rem;
-        border-radius: 1.5rem;
+        padding: 0.8rem 1.5rem;
+        border-radius: 15px;
         cursor: pointer;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 
-            0 4px 12px rgba(233, 30, 99, 0.3),
-            0 1px 3px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      button#newGame::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: 0.5s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
       }
 
       button#newGame:hover {
         transform: translateY(-2px);
-        box-shadow: 
-            0 8px 24px rgba(233, 30, 99, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      button#newGame:hover::before {
-        left: 100%;
-      }
-
-      button#newGame:active {
-        transform: translateY(0);
+        box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
       }
 
       .game-board {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 1.25rem;
+        gap: 1rem;
         margin-bottom: 2rem;
-        perspective: 1200px;
-        transform-style: preserve-3d;
       }
 
       .card {
         aspect-ratio: 1;
         background: linear-gradient(135deg, #e91e63, #c2185b);
-        border-radius: 1.5rem;
+        border-radius: 15px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-style: preserve-3d;
-        position: relative;
-        border: none;
-        box-shadow: 
-            0 8px 16px rgba(0, 0, 0, 0.1),
-            0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .card::before {
-        content: '♥';
-        position: absolute;
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.1);
-        transform: scale(2);
-      }
-
-      .card:hover:not(.flipped):not(.matched) {
-        transform: translateY(-4px) rotateY(10deg);
-        box-shadow: 
-            0 12px 32px rgba(0, 0, 0, 0.15),
-            0 4px 8px rgba(0, 0, 0, 0.1);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .card.flipped {
-        transform: rotateY(180deg);
         background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-        box-shadow: 
-            0 4px 12px rgba(233, 30, 99, 0.2),
-            0 1px 3px rgba(0, 0, 0, 0.05);
+        transform: rotateY(180deg);
       }
 
       .card.matched {
         background: linear-gradient(135deg, #f8bbd0, #f48fb1);
         cursor: default;
-        animation: matchPulse 1.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+        animation: matchPulse 1.5s ease-in-out;
       }
 
       @keyframes matchPulse {
         0% { transform: scale(1); }
-        25% { transform: scale(1.1); }
-        50% { transform: scale(0.95); }
+        50% { transform: scale(1.1); }
         100% { transform: scale(1); }
       }
 
       .win-message {
         text-align: center;
-        margin-top: 2.5rem;
-        padding: 3rem;
-        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-        border-radius: 2rem;
-        box-shadow: 
-            0 20px 40px rgba(233, 30, 99, 0.15),
-            0 2px 6px rgba(0, 0, 0, 0.1);
-        animation: winReveal 1s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      @keyframes winReveal {
-        from { 
-            opacity: 0;
-            transform: translateY(40px) scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-      }
-
-      .win-message::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(circle at center, 
-            rgba(255, 255, 255, 0.8) 0%,
-            transparent 70%);
-        opacity: 0;
-        animation: winGlow 2s infinite;
-      }
-
-      @keyframes winGlow {
-        0% { opacity: 0; }
-        50% { opacity: 0.5; }
-        100% { opacity: 0; }
+        margin-top: 2rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.5s ease-in-out;
       }
 
       .win-message h2 {
-        color: #c2185b;
-        margin-bottom: 1.5rem;
-        font-size: 2.5rem;
-        font-weight: 800;
-        text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+        color: #d81b60;
+        margin-bottom: 1rem;
+        font-size: 2rem;
       }
 
       .win-message p {
-        color: #2d3436;
-        font-size: 1.4rem;
-        font-weight: 500;
+        color: #4a4a4a;
+        font-size: 1.2rem;
       }
 
-      .hidden {
-        display: none;
+      /* Poem Section Styles */
+      .poem-container {
+        max-width: 600px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin-top: 2rem;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .poem-title {
+        font-size: 2.5rem;
+        color: #d81b60;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(216, 27, 96, 0.2);
+      }
+
+      .poem-container p {
+        font-size: 1.2rem;
+        color: #4a4a4a;
+        margin-bottom: 1.5rem;
+      }
+
+      img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #e91e63, #d81b60);
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
       }
 
       /* Responsive Design */
       @media (max-width: 768px) {
-        body {
-            padding: 1rem;
-        }
-        
-        .container {
-            padding: 2rem;
-            border-radius: 2rem;
-        }
-        
         h1 {
-            font-size: 2.25rem;
-            margin-bottom: 2rem;
+          font-size: 2.5rem;
         }
-        
+
+        .poem-title {
+          font-size: 2rem;
+        }
+
         .stats {
-            font-size: 1rem;
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .card {
-            font-size: 2rem;
+          flex-direction: column;
+          gap: 1rem;
         }
 
-        .win-message {
-            padding: 2rem;
-        }
-
-        .win-message h2 {
-            font-size: 2rem;
-        }
-
-        .win-message p {
-            font-size: 1.2rem;
+        .game-board {
+          grid-template-columns: repeat(3, 1fr);
         }
       }
 
       @media (max-width: 480px) {
-        .container {
-            padding: 1.5rem;
+        h1 {
+          font-size: 2rem;
+        }
+
+        .poem-title {
+          font-size: 1.8rem;
         }
 
         .game-board {
-            gap: 0.75rem;
-        }
-        
-        .stats {
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
+          grid-template-columns: repeat(2, 1fr);
         }
 
-        h1 {
-            font-size: 2rem;
-        }
-
-        button#newGame {
-            width: 100%;
-            margin: 0.5rem 0;
+        button {
+          width: 100%;
         }
       }
     </style>
+  </head>
+  <body>
+    <!-- Love Memory Game -->
     <div class="container">
-        <h1>Love Memory Game</h1>
-        
-        <div class="stats">
-            <p>Moves: <span id="moves">0</span></p>
-            <button id="newGame">New Game</button>
-            <p>Matches: <span id="matches">0</span>/8</p>
-        </div>
-
-        <div class="game-board"></div>
-
-        <div id="winMessage" class="win-message hidden">
-            <h2>Congratulations! 🎉</h2>
-            <p>You completed the game in <span id="finalMoves">0</span> moves!</p>
-        </div>
+      <h1>Love Memory Game</h1>
+      <div class="stats">
+        <p>Moves: <span id="moves">0</span></p>
+        <button id="newGame">New Game</button>
+        <p>Matches: <span id="matches">0</span>/8</p>
+      </div>
+      <div class="game-board"></div>
+      <div id="winMessage" class="win-message hidden">
+        <h2>Congratulations! 🎉</h2>
+        <p>You completed the game in <span id="finalMoves">0</span> moves!</p>
+      </div>
     </div>
+
+    <!-- Poem Section -->
+    <div class="poem-container">
+      <h1 class="poem-title">New Start for Us?</h1>
+      <p>YOU were such an experience</p>
+      <img src="https://via.placeholder.com/400x250" alt="Romantic Image">
+      <div class="button-container">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+      </div>
+    </div>
+
     <script>
-      const cards = [
-          '❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞',
-          '❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞'
-      ];
-      
+      // Love Memory Game Script
+      const cards = ['❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞', '❤️', '💖', '💝', '💕', '💓', '💗', '💘', '💞'];
       let flippedCards = [];
       let matchedPairs = 0;
       let moves = 0;
       let canFlip = true;
-      
+
       const gameBoard = document.querySelector('.game-board');
       const movesDisplay = document.getElementById('moves');
       const matchesDisplay = document.getElementById('matches');
       const winMessage = document.getElementById('winMessage');
       const finalMovesDisplay = document.getElementById('finalMoves');
       const newGameButton = document.getElementById('newGame');
-      
+
       function shuffleCards() {
-          for (let i = cards.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [cards[i], cards[j]] = [cards[j], cards[i]];
-          }
+        for (let i = cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
       }
-      
+
       function createCard(symbol, index) {
-          const card = document.createElement('button');
-          card.className = 'card';
-          card.dataset.index = index;
-          card.dataset.symbol = symbol;
-          card.addEventListener('click', flipCard);
-          return card;
+        const card = document.createElement('button');
+        card.className = 'card';
+        card.dataset.index = index;
+        card.dataset.symbol = symbol;
+        card.addEventListener('click', flipCard);
+        return card;
       }
-      
+
       function flipCard() {
-          if (!canFlip || flippedCards.includes(this) || this.classList.contains('matched')) {
-              return;
-          }
-      
-          this.classList.add('flipped');
-          this.innerHTML = this.dataset.symbol;
-          flippedCards.push(this);
-      
-          if (flippedCards.length === 2) {
-              moves++;
-              movesDisplay.textContent = moves;
-              checkMatch();
-          }
+        if (!canFlip || flippedCards.includes(this) || this.classList.contains('matched')) return;
+
+        this.classList.add('flipped');
+        this.innerHTML = this.dataset.symbol;
+        flippedCards.push(this);
+
+        if (flippedCards.length === 2) {
+          moves++;
+          movesDisplay.textContent = moves;
+          checkMatch();
+        }
       }
-      
+
       function checkMatch() {
-          const [card1, card2] = flippedCards;
-          const match = card1.dataset.symbol === card2.dataset.symbol;
-      
-          canFlip = false;
-      
-          setTimeout(() => {
-              if (match) {
-                  card1.classList.add('matched');
-                  card2.classList.add('matched');
-                  matchedPairs++;
-                  matchesDisplay.textContent = matchedPairs;
-      
-                  if (matchedPairs === 8) {
-                      showWinMessage();
-                  }
-              } else {
-                  card1.classList.remove('flipped');
-                  card2.classList.remove('flipped');
-                  card1.innerHTML = '';
-                  card2.innerHTML = '';
-              }
-      
-              flippedCards = [];
-              canFlip = true;
-          }, 1000);
-      }
-      
-      function showWinMessage() {
-          winMessage.classList.remove('hidden');
-          finalMovesDisplay.textContent = moves;
-      }
-      
-      function initializeGame() {
-          gameBoard.innerHTML = '';
-          winMessage.classList.add('hidden');
+        const [card1, card2] = flippedCards;
+        const match = card1.dataset.symbol === card2.dataset.symbol;
+
+        canFlip = false;
+
+        setTimeout(() => {
+          if (match) {
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            matchedPairs++;
+            matchesDisplay.textContent = matchedPairs;
+
+            if (matchedPairs === 8) showWinMessage();
+          } else {
+            card1.classList.remove('flipped');
+            card2.classList.remove('flipped');
+            card1.innerHTML = '';
+            card2.innerHTML = '';
+          }
+
           flippedCards = [];
-          matchedPairs = 0;
-          moves = 0;
           canFlip = true;
-      
-          movesDisplay.textContent = '0';
-          matchesDisplay.textContent = '0';
-      
-          shuffleCards();
-          cards.forEach((symbol, index) => {
-              gameBoard.appendChild(createCard(symbol, index));
-          });
+        }, 1000);
       }
-      
+
+      function showWinMessage() {
+        winMessage.classList.remove('hidden');
+        finalMovesDisplay.textContent = moves;
+      }
+
+      function initializeGame() {
+        gameBoard.innerHTML = '';
+        winMessage.classList.add('hidden');
+        flippedCards = [];
+        matchedPairs = 0;
+        moves = 0;
+        canFlip = true;
+
+        movesDisplay.textContent = '0';
+        matchesDisplay.textContent = '0';
+
+        shuffleCards();
+        cards.forEach((symbol, index) => {
+          gameBoard.appendChild(createCard(symbol, index));
+        });
+      }
+
       newGameButton.addEventListener('click', initializeGame);
-      
-      // Start the game
       initializeGame();
+
+      // Poem Section Script
+      document.getElementById("yes").addEventListener("click", () => {
+        window.location.href = 'YES.html';
+      });
+
+      const noButton = document.getElementById("no");
+      noButton.addEventListener("click", () => {
+        const maxWidth = window.innerWidth - noButton.offsetWidth;
+        const maxHeight = window.innerHeight - noButton.offsetHeight;
+
+        const i = Math.floor(Math.random() * maxWidth);
+        const j = Math.floor(Math.random() * maxHeight);
+
+        noButton.style.position = 'absolute';
+        noButton.style.left = i + "px";
+        noButton.style.top = j + "px";
+      });
     </script>
   </body>
 </html>
