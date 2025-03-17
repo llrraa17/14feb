@@ -3,149 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Notes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <title>Love Notes ❤️</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora&display=swap');
-        
-        @tailwind base;
-@tailwind components;
-@tailwind utilities;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital@0,1&display=swap');
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fce4ec 0%, #e8eaf6 100%);
+            padding: 2rem;
+        }
 
-@layer base {
-  body {
-    @apply antialiased;
-  }
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-@layer components {
-  .love-note {
-    @apply transition-all duration-500;
-    animation: fadeIn 0.5s ease-out;
-  }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-  .love-note:hover {
-    transform: translateY(-2px) scale(1.01);
-  }
+        .header h1 {
+            color: #e91e63;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-  .textarea-love {
-    background-image: linear-gradient(to bottom, transparent 31px, #f3e8ff 31px);
-    background-size: 100% 32px;
-    line-height: 32px;
-  }
+        .header p {
+            color: #666;
+        }
 
-  input[type="password"] {
-    letter-spacing: 0.3em;
-    font-family: monospace;
-  }
-}
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
 
-@keyframes floatingHeart {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
+        .tab-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
 
-.floating-heart {
-  animation: floatingHeart 2s ease-in-out infinite;
-}
+        .tab-button.active {
+            background: #e91e63;
+            color: white;
+        }
 
-.glass-morphism {
-  @apply bg-white/90 backdrop-blur-md;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
+        .tab-button:not(.active) {
+            background: #f5f5f5;
+            color: #666;
+        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 1px solid #ffcdd2;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            resize: none;
+            font-size: 1rem;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ffcdd2;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #d81b60;
+        }
+
+        .note {
+            background: #fce4ec;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .note-timestamp {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-content {
+            white-space: pre-wrap;
+            color: #333;
+        }
+
+        .error {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .error.success {
+            color: #e91e63;
+        }
+
+        .error.failure {
+            color: #f44336;
+        }
+
+        .heart {
+            color: #e91e63;
+            font-size: 2rem;
+            margin: 0 0.5rem;
         }
     </style>
 </head>
-<body class="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-    <div class="max-w-3xl w-full">
-        <h1 class="text-5xl font-playfair text-gray-800 text-center">Love Notes</h1>
-        <p class="text-gray-600 text-center italic">Cherish every moment, capture every thought</p>
-        
-        <form id="noteForm" class="mt-6">
-            <textarea id="noteContent" class="w-full h-40 p-4 border rounded-lg" placeholder="Write your note..."></textarea>
-            <input id="notePin" type="password" class="w-full px-4 py-2 border rounded-lg mt-2" placeholder="Enter a PIN (4-digits)" maxlength="4">
-            <button type="submit" class="w-full mt-3 bg-blue-500 text-white py-2 rounded-lg">Save Note</button>
-        </form>
-        
-        <div id="notesContainer" class="mt-6 space-y-4"></div>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>❤️ Love Notes ❤️</h1>
+            <p>Write your heart out...</p>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="write">✏️ Write Note</button>
+                <button class="tab-button" data-tab="read">📖 Read Note</button>
+            </div>
+
+            <div class="tab-content active" id="write">
+                <textarea id="noteContent" placeholder="Write your love note here..."></textarea>
+                <div class="input-group">
+                    <input type="password" id="writePasscode" placeholder="Set a secret passcode">
+                    <button onclick="saveNote()">🔒 Save Note</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="read">
+                <div class="input-group">
+                    <input type="password" id="readPasscode" placeholder="Enter your passcode">
+                    <button onclick="retrieveNote()">🔓 Read Note</button>
+                </div>
+                <div id="noteDisplay"></div>
+            </div>
+
+            <div id="error" class="error"></div>
+        </div>
     </div>
-    
+
     <script>
-        const notes = [];
-        document.getElementById('noteForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const content = document.getElementById('noteContent').value;
-            const pin = document.getElementById('notePin').value;
-            if (!content.trim() || !pin.trim()) return;
-            
-            const note = { id: Date.now(), content, pin };
-            notes.unshift(note);
-            document.getElementById('noteContent').value = '';
-            document.getElementById('notePin').value = '';
-            renderNotes();
-        });
-        
-        function renderNotes() {
-            const container = document.getElementById('notesContainer');
-            container.innerHTML = '';
-            
-            notes.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.classList.add('love-note', 'p-4', 'border', 'rounded-lg', 'bg-white', 'shadow');
-                
-                const pinInput = document.createElement('input');
-                pinInput.type = 'password';
-                pinInput.placeholder = 'Enter PIN to view';
-                pinInput.classList.add('w-full', 'px-3', 'py-2', 'border', 'rounded-lg', 'mb-2');
-                
-                const revealBtn = document.createElement('button');
-                revealBtn.innerText = 'Unlock';
-                revealBtn.classList.add('bg-green-500', 'text-white', 'px-3', 'py-1', 'rounded-lg', 'w-full');
-                
-                revealBtn.addEventListener('click', function() {
-                    if (pinInput.value === note.pin) {
-                        const noteContent = document.createElement('p');
-                        noteContent.innerText = note.content;
-                        noteContent.classList.add('mt-2', 'text-gray-700');
-                        noteDiv.appendChild(noteContent);
-                        pinInput.remove();
-                        revealBtn.remove();
-                    } else {
-                        alert('Incorrect PIN!');
-                    }
-                });
-                
-                noteDiv.appendChild(pinInput);
-                noteDiv.appendChild(revealBtn);
-                container.appendChild(noteDiv);
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Update button states
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Update content visibility
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(button.dataset.tab).classList.add('active');
+
+                // Clear error message
+                document.getElementById('error').textContent = '';
             });
+        });
+
+        function saveNote() {
+            const content = document.getElementById('noteContent').value;
+            const passcode = document.getElementById('writePasscode').value;
+            const errorElement = document.getElementById('error');
+
+            if (!content.trim() || !passcode.trim()) {
+                errorElement.textContent = 'Please write a note and set a passcode ❤️';
+                errorElement.className = 'error success';
+                return;
+            }
+
+            const note = {
+                content: content,
+                timestamp: new Date().toLocaleString(),
+                passcode: passcode
+            };
+
+            // Get existing notes or initialize empty array
+            let notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            notes.push(note);
+            localStorage.setItem('loveNotes', JSON.stringify(notes));
+
+            // Clear inputs and show success message
+            document.getElementById('noteContent').value = '';
+            document.getElementById('writePasscode').value = '';
+            errorElement.textContent = `Your note has been saved with passcode: ${passcode} ❤️`;
+            errorElement.className = 'error success';
+        }
+
+        function retrieveNote() {
+            const passcode = document.getElementById('readPasscode').value;
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            const errorElement = document.getElementById('error');
+            const noteDisplay = document.getElementById('noteDisplay');
+
+            const found = notes.find(note => note.passcode === passcode);
+
+            if (found) {
+                noteDisplay.innerHTML = `
+                    <div class="note">
+                        <div class="note-timestamp">Written on: ${found.timestamp}</div>
+                        <div class="note-content">${found.content}</div>
+                    </div>
+                `;
+                errorElement.textContent = '';
+            } else {
+                noteDisplay.innerHTML = '';
+                errorElement.textContent = 'No note found with this passcode 💔';
+                errorElement.className = 'error failure';
+            }
         }
     </script>
 </body>
