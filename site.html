@@ -3,222 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Love's Gateway</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-      /* Reset and base styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        min-height: 100vh;
-        background: radial-gradient(circle at top left, #ff758c 0%, #ff7eb3 100%);
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        color: #2d3436;
-      }
-
-      .container {
-        width: 100%;
-        max-width: 400px;
-        perspective: 1000px;
-      }
-
-      .login-box {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 3rem 2rem;
-        border-radius: 2rem;
-        box-shadow: 
-          0 20px 60px rgba(0, 0, 0, 0.1),
-          0 1px 8px rgba(0, 0, 0, 0.05),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(20px);
-        transform-style: preserve-3d;
-        animation: float 6s ease-in-out infinite;
-        text-align: center;
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0) rotateX(0); }
-        50% { transform: translateY(-10px) rotateX(2deg); }
-      }
-
-      h1 {
-        color: #d81b60;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        font-size: 2rem;
-        font-weight: 800;
-        text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.1);
-      }
-
-      .heart-icon {
-        font-size: 3rem;
-        text-align: center;
-        margin-bottom: 2rem;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-      }
-
-      .input-group {
-        position: relative;
-        margin-bottom: 2rem;
-      }
-
-      input {
-        width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 1rem;
-        background: rgba(233, 30, 99, 0.05);
-        font-size: 1rem;
-        color: #2d3436;
-        transition: all 0.3s ease;
-      }
-
-      input:focus {
-        outline: none;
-        background: rgba(233, 30, 99, 0.1);
-      }
-
-      .input-border {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(to right, #e91e63, #d81b60);
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-      }
-
-      input:focus + .input-border {
-        width: 100%;
-      }
-
-      button {
-        width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 1rem;
-        background: linear-gradient(135deg, #e91e63, #d81b60);
-        color: white;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 
-          0 4px 12px rgba(233, 30, 99, 0.3),
-          0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      button:hover {
-        transform: translateY(-2px);
-        box-shadow: 
-          0 8px 24px rgba(233, 30, 99, 0.4),
-          0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      button:active {
-        transform: translateY(0);
-      }
-
-      .message {
-        margin-top: 1rem;
-        text-align: center;
-        font-size: 0.9rem;
-        min-height: 1.5rem;
-        transition: all 0.3s ease;
-      }
-
-      .message.error {
-        color: #d32f2f;
-        animation: shake 0.5s ease-in-out;
-      }
-
-      .message.success {
-        color: #388e3c;
-        animation: slideUp 0.5s ease-out;
-      }
-
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-      }
-
-      @keyframes slideUp {
-        from { 
-          opacity: 0;
-          transform: translateY(10px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
 
-      /* Responsive Design */
-      @media (max-width: 480px) {
         body {
-          padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("https://i.pinimg.com/474x/0c/e5/f6/0ce5f6c2ae200078de8498c7f07663e1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden;
         }
-        
-        .login-box {
-          padding: 2rem 1.5rem;
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(236, 72, 153, 0.3), rgba(88, 28, 135, 0.4));
+            backdrop-filter: blur(4px);
         }
-        
-        h1 {
-          font-size: 1.75rem;
+
+        .intro-scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s;
         }
-      }
+
+        .intro-scene.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-content {
+            text-align: center;
+        }
+
+        .heart-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .heart-icon {
+            width: 128px;
+            height: 128px;
+            color: rgb(236, 72, 153);
+            animation: pulse 2s infinite;
+        }
+
+        .sparkles-icon {
+            width: 48px;
+            height: 48px;
+            color: rgb(253, 224, 71);
+            position: absolute;
+            right: -16px;
+            top: -16px;
+            animation: bounce 2s infinite;
+        }
+
+        .intro-title {
+            margin-top: 32px;
+            font-size: 60px;
+            font-weight: bold;
+            color: white;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .intro-subtitle {
+            margin-top: 16px;
+            font-size: 24px;
+            color: rgb(251, 207, 232);
+            animation: slideUp 1s ease-out 0.5s both;
+        }
+
+        .login-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 384px;
+            transition: all 1s;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .login-container.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .login-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: -48px;
+            width: 96px;
+            height: 96px;
+            background: rgba(236, 72, 153, 0.2);
+            border-radius: 50%;
+            filter: blur(24px);
+            animation: pulse 2s infinite;
+        }
+
+        .login-heart {
+            width: 64px;
+            height: 64px;
+            color: rgb(236, 72, 153);
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .login-sparkles {
+            width: 24px;
+            height: 24px;
+            color: rgb(253, 224, 71);
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            animation: bounce 2s infinite;
+        }
+
+        .login-title {
+            margin-top: 24px;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            margin-top: 12px;
+            color: rgb(251, 207, 232);
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: rgb(251, 207, 232);
+            pointer-events: none;
+        }
+
+        .secret-input {
+            width: 100%;
+            padding: 16px 16px 16px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .secret-input::placeholder {
+            color: rgba(251, 207, 232, 0.5);
+        }
+
+        .secret-input:focus {
+            outline: none;
+            border-color: transparent;
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.3);
+        }
+
+        .error-message {
+            position: absolute;
+            bottom: -24px;
+            left: 0;
+            font-size: 14px;
+            color: rgb(251, 207, 232);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(to right, rgb(236, 72, 153), rgb(147, 51, 234));
+            color: white;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(to right, rgb(219, 39, 119), rgb(124, 58, 237));
+        }
+
+        .submit-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.3), 0 0 0 4px rgba(236, 72, 153, 0.1);
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(251, 207, 232, 0.8);
+            transition: color 0.2s;
+        }
+
+        .footer-text:hover {
+            color: rgb(251, 207, 232);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="login-box">
-            <h1>Enter Code</h1>
-            <div class="heart-icon">💖</div>
-            <form id="loginForm">
-                <div class="input-group">
-                    <input id="codeInput" type="text" placeholder="Enter code" required>
-                    <div class="input-border"></div>
-                </div>
-                <button type="submit">Submit</button>
-                <div id="message" class="message"></div>
-            </form>
+    <div class="overlay"></div>
+    
+    <!-- Intro Scene -->
+    <div class="intro-scene" id="introScene">
+        <div class="intro-content">
+            <div class="heart-container">
+                <i data-lucide="heart" class="heart-icon"></i>
+                <i data-lucide="sparkles" class="sparkles-icon"></i>
+            </div>
+            <h1 class="intro-title">  for you , LINA </h1>
+            <p class="intro-subtitle">A special message awaits...</p>
         </div>
     </div>
 
+    <!-- Login Container -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-header">
+            <div class="glow-effect"></div>
+            <i data-lucide="heart" class="login-heart"></i>
+            <i data-lucide="sparkles" class="login-sparkles"></i>
+            <h2 class="login-title"> MY PERSON</h2>
+            <p class="login-subtitle">Enter the secret code of our hearts</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-container">
+                <i data-lucide="key-round" class="input-icon"></i>
+                <input
+                    type="password"
+                    id="secretCode"
+                    class="secret-input"
+                    placeholder="Enter secret code"
+                    required
+                >
+                <p class="error-message" id="errorMessage" style="display: none;"></p>
+            </div>
+
+            <button type="submit" class="submit-button">
+                <i data-lucide="heart"></i>
+                <span>Unlock My Heart lina </span>
+                <i data-lucide="sparkles"></i>
+            </button>
+        </form>
+
+        <p class="footer-text"> here you can find your zone with me </p>
+    </div>
+
     <script>
-      document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting normally
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-        const code = document.getElementById('codeInput').value;
-        const message = document.getElementById('message');
+        // Show login container after delay
+        setTimeout(() => {
+            document.getElementById('introScene').classList.add('hidden');
+            document.getElementById('loginContainer').classList.add('visible');
+        }, 3000);
 
-        if (code === "224linablue") {
-          message.textContent = "Success! Redirecting...";
-          message.className = "message success";
-          
-          setTimeout(() => {
-            window.location.href = "YES.html";  // Redirect after code validation
-          }, 1500);
-        } else {
-          message.textContent = "Invalid code! Please try again.";
-          message.className = "message error";
-        }
-      });
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const secretCode = document.getElementById('secretCode').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (secretCode === '224linablue') {
+                window.location.href = 'https://llrraa17.github.io/14feb/YES.html';
+            } else {
+                errorMessage.textContent = 'Incorrect code. Try again, my love ❤️';
+                errorMessage.style.display = 'block';
+                document.getElementById('secretCode').value = '';
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
     </script>
 </body>
 </html>
